@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lighting Robustness</title>
+<style>
+  :root{
+    --pitch:#173C2E; --pitch-dark:#0F2A20; --chalk:#F3F6F2; --line:#3E6A54;
+    --amber:#E3A857; --ink:#0D1F17; --muted:#8FAE9C;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--pitch-dark); color:var(--chalk);
+    font-family:'Georgia',ui-serif,serif; -webkit-font-smoothing:antialiased;
+  }
+  header{ padding:24px 18px 12px; border-bottom:1px solid var(--line); max-width:520px; margin:0 auto; }
+  header h1{ margin:0 0 6px; font-size:1.3rem; font-weight:600; }
+  header p{ margin:0; color:var(--muted); font-size:.9rem; font-family:ui-sans-serif,system-ui,sans-serif; line-height:1.5; }
+  main{ padding:18px; max-width:520px; margin:0 auto; }
+  .controls{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  button.opt{
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:.82rem;
+    background:var(--pitch); color:var(--chalk); border:1px solid var(--line);
+    padding:9px 14px; border-radius:20px; cursor:pointer;
+  }
+  button.opt.sel{ background:var(--amber); color:var(--ink); border-color:var(--amber); font-weight:600; }
+  .stage{
+    background:var(--pitch); border:1px solid var(--line); border-radius:8px;
+    padding:14px; margin-bottom:14px;
+  }
+  svg{display:block; margin:0 auto; max-width:100%; height:auto;}
+  .readout{
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:.88rem;
+    display:flex; justify-content:space-between; padding:9px 0;
+    border-top:1px dashed var(--line);
+  }
+  .readout:first-of-type{border-top:none}
+  .readout b{color:var(--amber); font-weight:600;}
+  .tag{
+    display:inline-block; font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:.75rem; padding:4px 10px; border-radius:20px; margin-top:10px;
+  }
+  .tag.ok{background:#2E6B4A; color:#DFF4E7;}
+  .tag.bad{background:#7A2E2E; color:#F6D6D6;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Lighting robustness</h1>
+  <p><b style="color:var(--chalk)">Problem:</b> a detector trained only on bright daylight loses the ball at night or in shadow.<br>
+  <b style="color:var(--chalk)">Fix:</b> train and test across lighting conditions from the start.</p>
+</header>
+<main>
+  <div class="controls" id="lightBtns">
+    <button class="opt sel" data-v="day">Daylight</button>
+    <button class="opt" data-v="evening">Evening</button>
+    <button class="opt" data-v="shadow">Shadow (untrained)</button>
+    <button class="opt" data-v="night">Night (untrained)</button>
+  </div>
+  <div class="stage">
+    <svg viewBox="0 0 300 160" width="100%">
+      <rect id="lightBg" x="0" y="0" width="300" height="160" fill="#2E5C46"/>
+      <circle id="ballHalo" cx="150" cy="80" r="22" fill="none" stroke="#E3A857" stroke-width="2" stroke-dasharray="4 3"/>
+      <circle id="ballDot" cx="150" cy="80" r="14" fill="#F3F6F2" stroke="#0D1F17" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="readout">Seen in training data? <b id="lightTrained">Yes</b></div>
+  <div class="readout">Detection confidence <b id="lightConf">96%</b></div>
+  <div id="lightTag" class="tag ok">Ball detected reliably</div>
+</main>
+<script>
+  const lightData = {
+    day:    {bg:'#2E5C46', trained:'Yes', conf:96, tag:['ok','Ball detected reliably']},
+    evening:{bg:'#22392E', trained:'Yes', conf:88, tag:['ok','Ball detected reliably']},
+    shadow: {bg:'#1B2A22', trained:'No',  conf:41, tag:['bad','Ball frequently missed']},
+    night:  {bg:'#0E1712', trained:'No',  conf:22, tag:['bad','Ball frequently missed']},
+  };
+  document.querySelectorAll('#lightBtns .opt').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('#lightBtns .opt').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+      const d = lightData[b.dataset.v];
+      document.getElementById('lightBg').setAttribute('fill', d.bg);
+      document.getElementById('lightTrained').textContent = d.trained;
+      document.getElementById('lightConf').textContent = d.conf + '%';
+      document.getElementById('ballHalo').style.opacity = d.conf/100;
+      const tagEl = document.getElementById('lightTag');
+      tagEl.className = 'tag ' + d.tag[0];
+      tagEl.textContent = d.tag[1];
+    };
+  });
+</script>
+</body>
+</html>
