@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Camera Centering</title>
+<style>
+  :root{
+    --pitch:#173C2E; --pitch-dark:#0F2A20; --chalk:#F3F6F2; --line:#3E6A54;
+    --amber:#E3A857; --ink:#0D1F17; --muted:#8FAE9C;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--pitch-dark); color:var(--chalk);
+    font-family:'Georgia',ui-serif,serif; -webkit-font-smoothing:antialiased;
+  }
+  header{ padding:24px 18px 12px; border-bottom:1px solid var(--line); max-width:520px; margin:0 auto; }
+  header h1{ margin:0 0 6px; font-size:1.3rem; font-weight:600; }
+  header p{ margin:0; color:var(--muted); font-size:.9rem; font-family:ui-sans-serif,system-ui,sans-serif; line-height:1.5; }
+  main{ padding:18px; max-width:520px; margin:0 auto; }
+  input[type=range]{ width:100%; accent-color:var(--amber); margin-bottom:14px; }
+  .stage{
+    background:var(--pitch); border:1px solid var(--line); border-radius:8px;
+    padding:14px; margin-bottom:14px;
+  }
+  svg{display:block; margin:0 auto; max-width:100%; height:auto;}
+  .readout{
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:.88rem;
+    display:flex; justify-content:space-between; padding:9px 0;
+    border-top:1px dashed var(--line);
+  }
+  .readout:first-of-type{border-top:none}
+  .readout b{color:var(--amber); font-weight:600;}
+  .tag{
+    display:inline-block; font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:.75rem; padding:4px 10px; border-radius:20px; margin-top:10px;
+  }
+  .tag.ok{background:#2E6B4A; color:#DFF4E7;}
+  .tag.warn{background:#7A5720; color:#FCE7C0;}
+  .tag.bad{background:#7A2E2E; color:#F6D6D6;}
+  .lbl{font-family:ui-sans-serif,system-ui,sans-serif; font-size:.78rem; color:var(--muted); margin-bottom:6px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Camera centering</h1>
+  <p><b style="color:var(--chalk)">Problem:</b> if the camera isn't dead-centre behind the goal, the rectangle skews and left/right accuracy drifts.<br>
+  <b style="color:var(--chalk)">Fix:</b> measure the off-centre angle and correct the geometry mathematically.</p>
+</header>
+<main>
+  <div class="lbl">Drag to move the camera off-centre</div>
+  <input type="range" id="camSlider" min="-40" max="40" value="0">
+  <div class="stage">
+    <svg viewBox="0 0 300 160" width="100%">
+      <line x1="0" y1="130" x2="300" y2="130" stroke="#3E6A54" stroke-width="2"/>
+      <polygon id="goalShape" points="90,40 210,40 220,130 80,130" fill="none" stroke="#F3F6F2" stroke-width="3"/>
+      <line id="markerL" x1="90" y1="130" x2="90" y2="40" stroke="#E3A857" stroke-width="4"/>
+      <line id="markerR" x1="210" y1="130" x2="210" y2="40" stroke="#E3A857" stroke-width="4"/>
+      <circle id="camDot" cx="150" cy="20" r="5" fill="#F3F6F2"/>
+    </svg>
+  </div>
+  <div class="readout">Camera offset from centre <b id="camOffset">0°</b></div>
+  <div class="readout">Correction applied <b id="camCorrect">None needed</b></div>
+  <div id="camTag" class="tag ok">Geometry square and reliable</div>
+</main>
+<script>
+  const slider = document.getElementById('camSlider');
+  slider.oninput = ()=>{
+    const v = +slider.value;
+    const skew = v * 0.8;
+    document.getElementById('goalShape').setAttribute('points',
+      `${90+skew},40 ${210+skew*0.3},40 ${220-skew*0.2},130 ${80-skew},130`);
+    document.getElementById('markerL').setAttribute('x1', 90+skew);
+    document.getElementById('markerL').setAttribute('x2', 90+skew);
+    document.getElementById('markerR').setAttribute('x1', 210+skew*0.3);
+    document.getElementById('markerR').setAttribute('x2', 210+skew*0.3);
+    document.getElementById('camDot').setAttribute('cx', 150+skew*0.5);
+    document.getElementById('camOffset').textContent = Math.abs(v) + '°';
+    document.getElementById('camCorrect').textContent = v===0 ? 'None needed' : `+${Math.abs(v)}° geometry correction`;
+    const tagEl = document.getElementById('camTag');
+    if(Math.abs(v) < 15){ tagEl.className='tag ok'; tagEl.textContent='Geometry square and reliable'; }
+    else if(Math.abs(v) < 30){ tagEl.className='tag warn'; tagEl.textContent='Corrected, some uncertainty near edges'; }
+    else { tagEl.className='tag bad'; tagEl.textContent='Severe skew — recalibration needed'; }
+  };
+</script>
+</body>
+</html>
