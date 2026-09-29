@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ball Size Calibration</title>
+<style>
+  :root{
+    --pitch:#173C2E; --pitch-dark:#0F2A20; --chalk:#F3F6F2; --line:#3E6A54;
+    --amber:#E3A857; --ink:#0D1F17; --muted:#8FAE9C;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--pitch-dark); color:var(--chalk);
+    font-family:'Georgia',ui-serif,serif; -webkit-font-smoothing:antialiased;
+  }
+  header{ padding:24px 18px 12px; border-bottom:1px solid var(--line); max-width:520px; margin:0 auto; }
+  header h1{ margin:0 0 6px; font-size:1.3rem; font-weight:600; }
+  header p{ margin:0; color:var(--muted); font-size:.9rem; font-family:ui-sans-serif,system-ui,sans-serif; line-height:1.5; }
+  main{ padding:18px; max-width:520px; margin:0 auto; }
+  select{
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:.88rem;
+    background:var(--pitch); color:var(--chalk); border:1px solid var(--line);
+    padding:10px 12px; border-radius:6px; width:100%; margin-bottom:14px;
+  }
+  .stage{
+    background:var(--pitch); border:1px solid var(--line); border-radius:8px;
+    padding:14px; margin-bottom:14px;
+  }
+  svg{display:block; margin:0 auto; max-width:100%; height:auto;}
+  .readout{
+    font-family:ui-sans-serif,system-ui,sans-serif; font-size:.88rem;
+    display:flex; justify-content:space-between; padding:9px 0;
+    border-top:1px dashed var(--line);
+  }
+  .readout:first-of-type{border-top:none}
+  .readout b{color:var(--amber); font-weight:600;}
+  .tag{
+    display:inline-block; font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:.75rem; padding:4px 10px; border-radius:20px; margin-top:10px;
+  }
+  .tag.ok{background:#2E6B4A; color:#DFF4E7;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Ball size calibration</h1>
+  <p><b style="color:var(--chalk)">Problem:</b> a futsal ball, size 4, and size 5 have different real diameters — assuming the wrong one breaks depth maths.<br>
+  <b style="color:var(--chalk)">Fix:</b> let the user pick the ball, or auto-calibrate from footage.</p>
+</header>
+<main>
+  <select id="ballSelect">
+    <option value="26">Futsal ball — 26 cm</option>
+    <option value="63.5" selected>Size 4 — 63.5 cm</option>
+    <option value="68">Size 5 — 68 cm</option>
+    <option value="auto">Auto-calibrate from footage</option>
+  </select>
+  <div class="stage">
+    <svg viewBox="0 0 300 120" width="100%">
+      <circle id="ballCircle" cx="150" cy="60" r="30" fill="none" stroke="#F3F6F2" stroke-width="2" stroke-dasharray="3 3"/>
+      <circle cx="150" cy="60" r="3" fill="#E3A857"/>
+    </svg>
+  </div>
+  <div class="readout">Diameter used for depth maths <b id="ballDia">63.5 cm</b></div>
+  <div class="readout">Depth estimate at same pixel size <b id="ballDepth">4.1 m</b></div>
+  <div id="ballTag" class="tag ok">Calibrated to correct ball</div>
+</main>
+<script>
+  const ballSelect = document.getElementById('ballSelect');
+  ballSelect.onchange = ()=>{
+    const v = ballSelect.value;
+    if(v==='auto'){
+      document.getElementById('ballDia').textContent = 'Estimated: 63.7 cm';
+      document.getElementById('ballDepth').textContent = '4.08 m';
+      document.getElementById('ballCircle').setAttribute('r', 30);
+      document.getElementById('ballTag').textContent = 'Auto-calibration matched a known ball';
+      return;
+    }
+    const dia = +v;
+    const depth = (dia/63.5*4.1).toFixed(2);
+    document.getElementById('ballDia').textContent = dia + ' cm';
+    document.getElementById('ballDepth').textContent = depth + ' m';
+    document.getElementById('ballCircle').setAttribute('r', 12 + dia/68*24);
+    document.getElementById('ballTag').textContent = 'Calibrated to correct ball';
+  };
+</script>
+</body>
+</html>
