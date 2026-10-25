@@ -1,0 +1,11 @@
+{
+  "video": "WhatsApp Video 2026-10-15 at 3.23.52 PM.mp4",
+  "decision": "GOAL_CANDIDATE_REVIEW_REQUIRED",
+  "candidate_frame": 50,
+  "frames_processed": 98,
+  "sports_ball_detection_count": 21,
+  "explanation": "A detected sports-ball box reached the size threshold inside the drawn area. Review the replay; this is not proof of a goal.",
+  "warning": "Single-camera heuristic, not validated goal-line technology. A slipper classified as sports ball can cause false results.",
+  "annotated_video": "D:\\Ai Footbat\\ai-goal-detection\\runs\\goal_size_gate\\annotated_videos\\WhatsApp Video 2026-10-15 at 3.23.52 PM_goal_check.mp4",
+  "detections_csv": "D:\\Ai Footbat\\ai-goal-detection\\runs\\goal_size_gate\\detections.csv"
+}

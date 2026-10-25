@@ -1,0 +1,36 @@
+{
+  "video": "WhatsApp Video 2026-10-15 at 3.23.52 PM.mp4",
+  "weights": "yolo26x.pt",
+  "ball_diameter_cm": 20.0,
+  "block_gap_cm": 280.0,
+  "virtual_goal_height_cm": 180.0,
+  "camera_to_goal_plane_m": 2.0,
+  "goal_polygon_xy": [
+    [
+      127,
+      63
+    ],
+    [
+      717,
+      65
+    ],
+    [
+      720,
+      357
+    ],
+    [
+      140,
+      354
+    ]
+  ],
+  "reference_rectangle_xywh": [
+    193,
+    308,
+    31,
+    23
+  ],
+  "reference_size_px": 26.70205984563738,
+  "size_threshold_px": 21.361647876509906,
+  "size_tolerance": 0.2,
+  "note": "The drawn reference sets a pixel threshold. Physical measurements are recorded but do not themselves calculate exact 3D geometry in this heuristic."
+}
