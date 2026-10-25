@@ -1,0 +1,10 @@
+﻿video,status,frames,frames_with_detection,frame_detection_percent,detection_count,fps,width,height,annotated_video
+WhatsApp Video 2026-10-15 at 3.23.50 PM.mp4,ok,90,35,38.89,35,45.015,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.23.50 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.23.52 PM.mp4,ok,98,7,7.14,7,45.012,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.23.52 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.17 PM.mp4,ok,148,14,9.46,14,45.012,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.17 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.23 PM.mp4,ok,344,239,69.48,391,44.794,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.23 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.25 PM.mp4,ok,61,17,27.87,18,45.013,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.25 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.26 PM.mp4,ok,49,7,14.29,8,45.015,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.26 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.29 PM.mp4,ok,129,100,77.52,166,44.666,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.29 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.32 PM.mp4,ok,206,102,49.51,172,44.792,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.32 PM_baseline.mp4
+WhatsApp Video 2026-10-15 at 3.24.38 PM.mp4,ok,437,3,0.69,3,44.909,848,478,runs\baseline\annotated_videos\WhatsApp Video 2026-10-15 at 3.24.38 PM_baseline.mp4

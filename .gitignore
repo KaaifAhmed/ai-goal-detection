@@ -37,7 +37,6 @@ wheels/
 *.weights
 
 # Datasets & Training Runs (YOLO / Ultralytics)
-runs/
 datasets/
 *.mp4
 *.avi
