@@ -1,0 +1,17 @@
+# Virtual Goal Detection Prototype Configuration
+# General geometry parameters
+crossbar_ratio_a: 0.75
+
+# Detector parameters
+model_name: "yolo26s.pt"
+ball_detection_conf: 0.28
+iou_threshold: 0.45
+max_aspect_ratio_deviation: 0.75  # Accommodate motion blur elongation
+
+# False positive filtering
+suppress_stationary_objects: true
+stationary_radius_px: 12.0
+stationary_frame_persistence: 5
+
+# Decision engine thresholds
+uncertainty_margin_px: 5
