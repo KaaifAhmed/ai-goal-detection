@@ -77,7 +77,7 @@ flowchart TD
   - Ingest videos from `../../data/` (`ground (1).mp4` to `ground (15).mp4`).
   - Extract frames with monotonic timestamps (essential for displacement and velocity calculation).
 - **`detector.py`**:
-  - Load standard pretrained model (e.g., `yolov8n.pt` / `yolov8s.pt` / `yolo11n.pt`).
+  - Load standard pretrained model (currently using `yolov26x`).
   - Filter for `sports ball` class.
   - Implement Goal-Side Region of Interest (ROI) clipping to discard distant pitch noise and save inference time.
   - Reject non-ball false positives using aspect-ratio and size thresholding.

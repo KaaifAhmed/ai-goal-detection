@@ -12,7 +12,7 @@ class BallDetector:
 
     def __init__(
         self,
-        model_name: str = "yolo26s.pt",
+        model_name: str = "yolo26x.pt",
         conf_threshold: float = 0.28,
         iou_threshold: float = 0.45,
         roi_box: Optional[Tuple[float, float, float, float]] = None,
